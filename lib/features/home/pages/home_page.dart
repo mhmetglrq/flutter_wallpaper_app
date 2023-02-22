@@ -6,6 +6,7 @@ import 'package:flutter_wallpaper_app/features/home/repository/home_repository.d
 
 import '../../../common/widget/custom_appbar.dart';
 import '../../../common/widget/custom_title.dart';
+import '../../../common/widget/pupular_photos.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,9 +18,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var repository = HomeRepository();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     repository.fetchPhotos();
   }
@@ -37,11 +38,12 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: paddingAll,
           child: Column(
-            children: const [
-              CustomTitle(
+            children: [
+              const CustomTitle(
                 iconData: Icons.spa_outlined,
                 title: "Keşfet",
               ),
+              PopularPhotos(repository: repository),
             ],
           ),
         ),
