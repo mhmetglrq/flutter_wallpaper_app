@@ -1,103 +1,142 @@
-class PhotoModel {
-  int? id;
-  int? width;
-  int? height;
-  String? url;
-  String? photographer;
-  String? photographerUrl;
-  int? photographerId;
-  String? avgColor;
-  Src? src;
-  bool? liked;
-  String? alt;
+// To parse this JSON data, do
+//
+//     final photoModels = photoModelsFromJson(jsonString);
 
-  PhotoModel(
-      {this.id,
-      this.width,
-      this.height,
-      this.url,
-      this.photographer,
-      this.photographerUrl,
-      this.photographerId,
-      this.avgColor,
-      this.src,
-      this.liked,
-      this.alt});
+import 'dart:convert';
 
-  PhotoModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    width = json['width'];
-    height = json['height'];
-    url = json['url'];
-    photographer = json['photographer'];
-    photographerUrl = json['photographer_url'];
-    photographerId = json['photographer_id'];
-    avgColor = json['avg_color'];
-    src = json['src'] != null ? Src.fromJson(json['src']) : null;
-    liked = json['liked'];
-    alt = json['alt'];
-  }
+PhotoModels photoModelsFromJson(String str) =>
+    PhotoModels.fromJson(json.decode(str));
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['width'] = width;
-    data['height'] = height;
-    data['url'] = url;
-    data['photographer'] = photographer;
-    data['photographer_url'] = photographerUrl;
-    data['photographer_id'] = photographerId;
-    data['avg_color'] = avgColor;
-    if (src != null) {
-      data['src'] = src!.toJson();
-    }
-    data['liked'] = liked;
-    data['alt'] = alt;
-    return data;
-  }
+String photoModelsToJson(PhotoModels data) => json.encode(data.toJson());
+
+class PhotoModels {
+  PhotoModels({
+    required this.page,
+    required this.perPage,
+    required this.photos,
+    required this.totalResults,
+    required this.nextPage,
+  });
+
+  int page;
+  int perPage;
+  List<Photo> photos;
+  int totalResults;
+  String nextPage;
+
+  factory PhotoModels.fromJson(Map<String, dynamic> json) => PhotoModels(
+        page: json["page"],
+        perPage: json["per_page"],
+        photos: List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
+        totalResults: json["total_results"],
+        nextPage: json["next_page"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "page": page,
+        "per_page": perPage,
+        "photos": List<dynamic>.from(photos.map((x) => x.toJson())),
+        "total_results": totalResults,
+        "next_page": nextPage,
+      };
+}
+
+class Photo {
+  Photo({
+    required this.id,
+    required this.width,
+    required this.height,
+    required this.url,
+    required this.photographer,
+    required this.photographerUrl,
+    required this.photographerId,
+    required this.avgColor,
+    required this.src,
+    required this.liked,
+    required this.alt,
+  });
+
+  int id;
+  int width;
+  int height;
+  String url;
+  String photographer;
+  String photographerUrl;
+  int photographerId;
+  String avgColor;
+  Src src;
+  bool liked;
+  String alt;
+
+  factory Photo.fromJson(Map<String, dynamic> json) => Photo(
+        id: json["id"],
+        width: json["width"],
+        height: json["height"],
+        url: json["url"],
+        photographer: json["photographer"],
+        photographerUrl: json["photographer_url"],
+        photographerId: json["photographer_id"],
+        avgColor: json["avg_color"],
+        src: Src.fromJson(json["src"]),
+        liked: json["liked"],
+        alt: json["alt"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "width": width,
+        "height": height,
+        "url": url,
+        "photographer": photographer,
+        "photographer_url": photographerUrl,
+        "photographer_id": photographerId,
+        "avg_color": avgColor,
+        "src": src.toJson(),
+        "liked": liked,
+        "alt": alt,
+      };
 }
 
 class Src {
-  String? original;
-  String? large2x;
-  String? large;
-  String? medium;
-  String? small;
-  String? portrait;
-  String? landscape;
-  String? tiny;
+  Src({
+    required this.original,
+    required this.large2X,
+    required this.large,
+    required this.medium,
+    required this.small,
+    required this.portrait,
+    required this.landscape,
+    required this.tiny,
+  });
 
-  Src(
-      {this.original,
-      this.large2x,
-      this.large,
-      this.medium,
-      this.small,
-      this.portrait,
-      this.landscape,
-      this.tiny});
+  String original;
+  String large2X;
+  String large;
+  String medium;
+  String small;
+  String portrait;
+  String landscape;
+  String tiny;
 
-  Src.fromJson(Map<String, dynamic> json) {
-    original = json['original'];
-    large2x = json['large2x'];
-    large = json['large'];
-    medium = json['medium'];
-    small = json['small'];
-    portrait = json['portrait'];
-    landscape = json['landscape'];
-    tiny = json['tiny'];
-  }
+  factory Src.fromJson(Map<String, dynamic> json) => Src(
+        original: json["original"],
+        large2X: json["large2x"],
+        large: json["large"],
+        medium: json["medium"],
+        small: json["small"],
+        portrait: json["portrait"],
+        landscape: json["landscape"],
+        tiny: json["tiny"],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['original'] = original;
-    data['large2x'] = large2x;
-    data['large'] = large;
-    data['medium'] = medium;
-    data['small'] = small;
-    data['portrait'] = portrait;
-    data['landscape'] = landscape;
-    data['tiny'] = tiny;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "original": original,
+        "large2x": large2X,
+        "large": large,
+        "medium": medium,
+        "small": small,
+        "portrait": portrait,
+        "landscape": landscape,
+        "tiny": tiny,
+      };
 }
